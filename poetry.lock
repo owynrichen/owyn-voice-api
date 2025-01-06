@@ -2193,11 +2193,37 @@ files = [
     {file = "websockets-14.1.tar.gz", hash = "sha256:398b10c77d471c0aab20a845e7a60076b6390bfdaac7a6d2edb0d2c59d75e8d8"},
 ]
 
+[[package]]
+name = "xformers"
+version = "0.0.29.post1"
+description = "XFormers: A collection of composable Transformer building blocks."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "xformers-0.0.29.post1-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:ff0cd00be84cc6867762d8c76f764f36c88f5997ae45caba28ab38d08dcf7090"},
+    {file = "xformers-0.0.29.post1-cp310-cp310-win_amd64.whl", hash = "sha256:b2e55d3209b95f702fb17caecd58c890192548941bbbee72f74aacb0d7c7690e"},
+    {file = "xformers-0.0.29.post1-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:2f0cb5bbad1855c5edc1ac7278c993cbb2f20d991eeedb5664e4c65d1c87ec8b"},
+    {file = "xformers-0.0.29.post1-cp311-cp311-win_amd64.whl", hash = "sha256:dc3aea9f8a3d239f75cc218edb7fbd69f77817e195bdc1d734c43a6e68dbf589"},
+    {file = "xformers-0.0.29.post1-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:6611f8a25b3e43264fada7b0c91e7daddb7336e79b1b240021ceda6ed76fc3be"},
+    {file = "xformers-0.0.29.post1-cp312-cp312-win_amd64.whl", hash = "sha256:9ef5f35330dd6b54f7457a888db07aa36a56935c5d1dc4e1a9f1909bbaa3ac4d"},
+    {file = "xformers-0.0.29.post1-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:73074aa6f8696d4364c65fc89a50c1262765ac0faea712f75b5b3d7d8d8ddb7a"},
+    {file = "xformers-0.0.29.post1-cp39-cp39-win_amd64.whl", hash = "sha256:c23e82f232ff88fcf13b8ebb2c48d1c4f3f8d12640b8e3e82d671db5182d4e1a"},
+]
+
+[package.dependencies]
+numpy = "*"
+torch = "2.5.1"
+
+[package.source]
+type = "legacy"
+url = "https://download.pytorch.org/whl/cu124"
+reference = "pytorch-cuda"
+
 [extras]
-cpu = ["torch"]
-cuda = ["torch"]
+cpu = ["torch", "torchaudio"]
+cuda = ["torch", "torchaudio"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "90b42754898ee922f34c54a929916c76844413aeb13c225ae2365f1ef3e57fae"
+content-hash = "de8f58a8ae92c96fa72be0f774a045790c0eece4661427a8df9e17bc77bbc3c1"

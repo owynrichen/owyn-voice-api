@@ -15,6 +15,7 @@ scipy = "^1.15.0"
 # https://github.com/lucaspar/poetry-torch
 torch = {version = "^2.5.1", extras = ["cuda"]}
 torchaudio = {version = "^2.5.1", extras = ["cuda"]}
+xformers = {version = "^0.0.29.post1", extras = ["cuda"]}
 
 [tool.poetry.group.cuda]
     optional = true
@@ -24,6 +25,7 @@ torchaudio = {version = "^2.5.1", extras = ["cuda"]}
         torch       = { version = "^2.5.1", source = "pytorch-cuda", markers = "extra=='cuda' and extra!='cpu'" }
         torchvision = { version = "^0.20", source = "pytorch-cuda", markers = "extra=='cuda' and extra!='cpu'" }
         torchaudio  = { version = "^2.5.1", source = "pytorch-cuda", markers = "extra=='cuda' and extra!='cpu'" }
+        xformers    = { version = "^0.0.29", source = "pytorch-cuda", markers = "extra=='cuda' and extra!='cpu'" }
 
 [tool.poetry.extras]
     cpu  = ["torch", "torchvision", "torchaudio"]
