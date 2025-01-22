@@ -6,6 +6,7 @@ https://github.com/lucaspar/poetry-torch
 
 ```bash
 poetry install --sync -E cuda --with cuda
+poetry run python -m unidic download # for MeloTTS/OpenVoice
 ```
 
 ```bash
