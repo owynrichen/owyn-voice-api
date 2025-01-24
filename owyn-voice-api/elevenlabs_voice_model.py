@@ -61,9 +61,7 @@ class ElevenLabsModel(VoiceModel):
     def get_filetype(self) -> str:
         return "audio/mpeg", "mp3"
     
-    def write_audio(self, voice_name: str, prompt: str, **kwargs) -> str:
-        audio_path, audio_filename, mimetype = self.build_audio_path(prompt, voice_name, **kwargs)
-
+    def _write_audio(self, voice_name: str, prompt: str, audio_path: str, audio_filename: str, mimetype:str, **kwargs) -> str:
         audio = self.client.generate(
             text=prompt,
             voice=self.get_voice(voice_name, **kwargs),
@@ -73,5 +71,5 @@ class ElevenLabsModel(VoiceModel):
 
         save(audio, audio_path)
 
-        return audio_path, audio_filename, mimetype
+        return audio_path
 

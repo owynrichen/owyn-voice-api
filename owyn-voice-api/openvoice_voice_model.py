@@ -30,11 +30,10 @@ class OpenVoiceModel(VoiceModel):
     def support_voice_name(self, voice_name: str) -> bool:
         return os.path.exists(f"{self.base_service_path}/assets/openvoice/{voice_name}.mp3")
     
-    def write_audio(self, voice_name: str, prompt: str, speed=1.0, **kwargs) -> str:
+    def _write_audio(self, voice_name: str, prompt: str, audio_path: str, audio_filename: str, mimetype:str, speed=1.0, **kwargs) -> str:
         reference_speaker = f"{self.base_service_path}/assets/openvoice/{voice_name}.mp3"
         target_se, audio_name = se_extractor.get_se(reference_speaker, self.tone_color_converter, vad=False)
         
-        audio_path, audio_filename, mimetype = self.build_audio_path(prompt, voice_name, speed=speed)
         src_path = f"{audio_path}.tmp.{self.get_filetype()[1]}"
         self.model.tts_to_file(prompt, self.speaker_id, src_path, speed=speed)
 
@@ -47,4 +46,4 @@ class OpenVoiceModel(VoiceModel):
             output_path=audio_path,
             message=encode_message)
         
-        return audio_path, audio_filename, mimetype
+        return audio_path
