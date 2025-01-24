@@ -21,6 +21,8 @@ unidic-lite = "^1.0.8"
 torch = {version = "^2.5.1", extras = ["cuda"]}
 torchaudio = {version = "^2.5.1", extras = ["cuda"]}
 xformers = {version = "^0.0.29.post1", extras = ["cuda"]}
+cloudflare = "^4.0.0"
+elevenlabs = "^1.50.4"
 
 [tool.poetry.group.cuda]
     optional = true

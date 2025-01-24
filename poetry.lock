@@ -663,6 +663,26 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "cloudflare"
+version = "4.0.0"
+description = "The official Python library for the cloudflare API"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "cloudflare-4.0.0-py3-none-any.whl", hash = "sha256:d8aa75b2e92f6a5f24ea368e7c19df0e42a76c528464acdc034528dd2597cb64"},
+    {file = "cloudflare-4.0.0.tar.gz", hash = "sha256:78b1222d532084bb29ab700257617fafd802a24c5af9b056f379b994e929af7e"},
+]
+
+[package.dependencies]
+anyio = ">=3.5.0,<5"
+distro = ">=1.7.0,<2"
+httpx = ">=0.23.0,<1"
+pydantic = ">=1.9.0,<3"
+sniffio = "*"
+typing-extensions = ">=4.10,<5"
+
+[[package]]
 name = "cn2an"
 version = "0.5.22"
 description = "Convert Chinese numerals and Arabic numerals."
@@ -1041,6 +1061,29 @@ files = [
     {file = "einops-0.8.0-py3-none-any.whl", hash = "sha256:9572fb63046264a862693b0a87088af3bdc8c068fde03de63453cbbde245465f"},
     {file = "einops-0.8.0.tar.gz", hash = "sha256:63486517fed345712a8385c100cb279108d9d47e6ae59099b07657e983deae85"},
 ]
+
+[[package]]
+name = "elevenlabs"
+version = "1.50.4"
+description = ""
+optional = false
+python-versions = "<4.0,>=3.8"
+groups = ["main"]
+files = [
+    {file = "elevenlabs-1.50.4-py3-none-any.whl", hash = "sha256:2e7dd69143a737cd45983c82f6485c0dbe536f6455b9408eabb3a94711beccca"},
+    {file = "elevenlabs-1.50.4.tar.gz", hash = "sha256:f4a569a9d70dde49a29e38fd35296ea75d80f213b245a938f43b91fba7d721cc"},
+]
+
+[package.dependencies]
+httpx = ">=0.21.2"
+pydantic = ">=1.9.2"
+pydantic-core = ">=2.18.2,<3.0.0"
+requests = ">=2.20"
+typing_extensions = ">=4.0.0"
+websockets = ">=11.0"
+
+[package.extras]
+pyaudio = ["pyaudio (>=0.2.14)"]
 
 [[package]]
 name = "email-validator"
@@ -6496,4 +6539,4 @@ cuda = ["torch", "torchaudio"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "fbf4979ab406cde1cde0134b5564eb9573ead14dab8ed6da9e8c56b75fee4618"
+content-hash = "40284b3067eb1550047447c549f83574a13f5327bb5ee3a5ebde90b6845cb94c"
