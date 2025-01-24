@@ -14,15 +14,20 @@ class VoiceModel:
 
     def support_voice_name(self, voice_name: str) -> bool:
         return False
+
+    def get_filetype(self) -> str:
+        return "audio/wav", "wav"
     
     def build_audio_path(self, prompt: str, voice_name: str, **kwargs) -> str:
         audio_key = f"{voice_name}|{prompt}|{kwargs}"
         m = hashlib.md5()
         m.update(audio_key.encode('utf-8'))
         audio_hash = m.hexdigest()
-        audio_path = f"{self.base_audio_path}{voice_name}-{audio_hash}.wav"
+        mime_type, filetype = self.get_filetype()
+        audio_filename = f"{voice_name}-{audio_hash}.{filetype}"
+        audio_path = f"{self.base_audio_path}{audio_filename}"
 
-        return audio_path
+        return audio_path, audio_filename, mime_type
     
     def write_audio(self, voice_name: str, prompt: str, **kwargs) -> str:
         raise NotImplementedError("This method should be overridden in subclasses.")

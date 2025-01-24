@@ -21,22 +21,21 @@ class OpenVoiceModel(VoiceModel):
 
         self.model = TTS(language=language, device=device)
 
-        speaker_ids = model.hps.data.spk2id
+        speaker_ids = self.model.hps.data.spk2id
         self.speaker_id = speaker_ids["EN-US"]
         speaker_key = "en-us"
-        source_se = torch.load(f'{self.base_service_path}/assets/openvoice/checkpointsV2/ses/{speaker_key}.pth', map_location=device)
+        self.source_se = torch.load(f'{self.base_service_path}/assets/openvoice/checkpointsV2/ses/{speaker_key}.pth', map_location=device)
 
     
     def support_voice_name(self, voice_name: str) -> bool:
         return os.path.exists(f"{self.base_service_path}/assets/openvoice/{voice_name}.mp3")
-        return True
     
-    def write_audio(self, voice_name: str, prompt: str, speed=1.0) -> str:
+    def write_audio(self, voice_name: str, prompt: str, speed=1.0, **kwargs) -> str:
         reference_speaker = f"{self.base_service_path}/assets/openvoice/{voice_name}.mp3"
         target_se, audio_name = se_extractor.get_se(reference_speaker, self.tone_color_converter, vad=False)
         
-        audio_path = self.build_audio_path(prompt, voice_name, speed=speed)
-        src_path = f"{audio_path}.tmp.wav"
+        audio_path, audio_filename, mimetype = self.build_audio_path(prompt, voice_name, speed=speed)
+        src_path = f"{audio_path}.tmp.{self.get_filetype()[1]}"
         self.model.tts_to_file(prompt, self.speaker_id, src_path, speed=speed)
 
         # Run the tone color converter
@@ -48,4 +47,4 @@ class OpenVoiceModel(VoiceModel):
             output_path=audio_path,
             message=encode_message)
         
-        return audio_path
+        return audio_path, audio_filename, mimetype

@@ -8,6 +8,17 @@ from .bark_voice_model import BarkModel
 from .elevenlabs_voice_model import ElevenLabsModel
 from .openvoice_voice_model import OpenVoiceModel
 
+# initialize the models
+print("Initializing models...")
+models = {
+        "bark": BarkModel(),
+        "openvoice": OpenVoiceModel(),
+        "elevenlabs": ElevenLabsModel()
+}
+
+print("Models initialized.")
+print("Starting server...")
+
 app = FastAPI()
 
 origins = [
@@ -25,12 +36,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-models = {
-#        "bark": BarkModel(),
-        "openvoice": OpenVoiceModel(),
-        "elevenlabs": ElevenLabsModel()
-}
-
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
@@ -45,7 +50,7 @@ async def speak_as(prompt:str, voice_name: str = "owyn-reference3", text_temp=0.
     for model in models.values():
         if model.support_voice_name(voice_name):
             print (f"Using model: {model.model_id} for voice: {voice_name}")
-            audio_path = model.write_audio(voice_name, prompt, text_temp=text_temp, waveform_temp=waveform_temp, speed=speed)
-            return FileResponse(audio_path, media_type="audio/wav", filename="output.wav")
+            audio_path, audio_filename, mimetype = model.write_audio(voice_name, prompt, text_temp=text_temp, waveform_temp=waveform_temp, speed=speed)
+            return FileResponse(audio_path, media_type=mimetype, filename=audio_filename)
     
     raise ValueError(f"Voice {voice_name} is not supported by any model.")

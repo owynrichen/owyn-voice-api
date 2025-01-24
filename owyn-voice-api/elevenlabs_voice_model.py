@@ -10,10 +10,12 @@ class ElevenLabsModel(VoiceModel):
         super().__init__("elevenlabs")
         
         print("Configuring ElevenLabs models...")
+        print(f"Cloudflare API Token: {os.environ.get('CLOUDFLARE_API_TOKEN')}")
+        print(f"Cloudflare Account ID: {os.environ.get('CLOUDFLARE_ACCOUNT_ID')}")
+        print(f"Cloudflare KV ID: {os.environ.get('CLOUDFLARE_KV_ID')}")
 
         self.cf_client = Cloudflare(
-            api_email=os.environ.get("CLOUDFLARE_EMAIL"),  # This is the default and can be omitted
-            api_key=os.environ.get("CLOUDFLARE_API_KEY"),  # This is the default and can be omitted
+            api_token=os.environ.get("CLOUDFLARE_API_TOKEN"),
         )
         api_kv = self.cf_client.kv.namespaces.values.get(
             key_name="elevenlabs-api-key",
@@ -21,7 +23,7 @@ class ElevenLabsModel(VoiceModel):
             namespace_id=os.environ.get("CLOUDFLARE_KV_ID"), # voice-clone-kv
         )
         print(api_kv)
-        api_key = api_kv.read()
+        api_key = str(api_kv.read(),'utf-8')
         print(f"ElevenLabs key: {api_key}")
 
         self.client = ElevenLabs(api_key=api_key)
@@ -34,10 +36,10 @@ class ElevenLabsModel(VoiceModel):
         el_voices = self.client.voices.get_all().voices
         print(el_voices)
         for voice in el_voices:
-            self.voices[voice.name] = voice.id
+            self.voices[voice.name] = voice.voice_id
     
     def get_voice_name(self, voice_name: str) -> str:
-        return voice_name.replace("el:", "")
+        return voice_name.replace("el_", "")
 
     def support_voice_name(self, voice_name: str) -> bool:
         el_voicename = self.get_voice_name(voice_name)
@@ -55,19 +57,21 @@ class ElevenLabsModel(VoiceModel):
             voice_id=self.voices[self.get_voice_name(voice_name)],
             settings=self.get_voice_settings(voice_name, **kwargs)
         )
+
+    def get_filetype(self) -> str:
+        return "audio/mpeg", "mp3"
     
     def write_audio(self, voice_name: str, prompt: str, **kwargs) -> str:
-        audio_path = self.build_audio_path(prompt, voice_name, **kwargs)
+        audio_path, audio_filename, mimetype = self.build_audio_path(prompt, voice_name, **kwargs)
 
         audio = self.client.generate(
             text=prompt,
             voice=self.get_voice(voice_name, **kwargs),
             model="eleven_multilingual_v2",
-            stream=False,
-            output_format="pcm_24000"
+            stream=False
         )
 
         save(audio, audio_path)
 
-        return audio_path
+        return audio_path, audio_filename, mimetype
 
