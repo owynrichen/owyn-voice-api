@@ -1,5 +1,7 @@
 import asyncio, os
 
+from dotenv import load_dotenv
+
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,6 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from .bark_voice_model import BarkModel
 from .elevenlabs_voice_model import ElevenLabsModel
 from .openvoice_voice_model import OpenVoiceModel
+
+load_dotenv()
 
 # initialize the models
 print("Initializing models...")
@@ -52,5 +56,5 @@ async def speak_as(prompt:str, voice_name: str = "owyn-reference3", text_temp=0.
             print (f"Using model: {model.model_id} for voice: {voice_name}")
             audio_path, audio_filename, mimetype = model.write_audio(voice_name, prompt, text_temp=text_temp, waveform_temp=waveform_temp, speed=speed)
             return FileResponse(audio_path, media_type=mimetype, filename=audio_filename)
-    
+
     raise ValueError(f"Voice {voice_name} is not supported by any model.")
