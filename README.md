@@ -13,6 +13,16 @@ poetry install --sync -E cuda --with cuda
 poetry run python -m unidic download # for MeloTTS/OpenVoice
 ```
 
+or for a cpu-based build (basically to only expose Elevenlabs since the
+others require CUDA)
+
+```bash
+git lfs checkout # for the openvoice checkpoint
+git lfs fetch
+poetry install --sync -E cpu
+poetry run python -m unidic download # for MeloTTS/OpenVoice
+```
+
 ```bash
 cp .env.example .env
 vim .env
@@ -25,5 +35,11 @@ poetry run fastapi run owyn-voice-api --port 8675
 To run this in a container, you can (using [podman](https://podman.io/)) run the following:
 
 ```bash
-podman build .
+podman build . -t registry.pdx.internal.owynrichen.com/owyn-voice-api:latest
 ```
+
+```bash
+podman run -it --rm -p8675:8675 -v /Users/owynrichen/Documents/code/owyn-voice-api/asset-vol/:/app/owyn-voice-api/assets registry.pdx.internal.owynrichen.com/owyn-voice-api:latest
+```
+
+Docker commands are basically the same.

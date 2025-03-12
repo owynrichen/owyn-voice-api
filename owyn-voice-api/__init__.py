@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+import torch
 
 from .bark_voice_model import BarkModel
 from .elevenlabs_voice_model import ElevenLabsModel
@@ -12,17 +13,30 @@ from .openvoice_voice_model import OpenVoiceModel
 
 load_dotenv()
 
-# initialize the models
-print("Initializing models...")
-models = {
-        "bark": BarkModel(),
-        "openvoice": OpenVoiceModel(),
-        "elevenlabs": ElevenLabsModel()
-}
+class Models:
+    def __init__(self):
+        self.models = None
 
-print("Models initialized.")
+    def values(self) -> list:
+        # lazy-initialize the models
+        if self.models is None:
+        # initialize the models
+            print("Initializing models...")
+            self.models = {
+                    "elevenlabs": ElevenLabsModel()
+            }
+
+            if torch.cuda.is_available():
+                print("CUDA available, initializing CUDA models...")
+                self.models["bark"] = BarkModel()
+                self.models["openvoice"] = OpenVoiceModel()
+
+            print(f"Models initialized. {self.models.keys()}")
+
+        return self.models.values()
+
+models = Models()
 print("Starting server...")
-
 app = FastAPI()
 
 origins = [
